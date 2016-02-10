@@ -52,11 +52,6 @@ Scene* SnakeGame::createScene()
     // return the scene
     return scene;
 }
-void SnakeGame::menuCloseCallback(Ref* pSender)
-{
-	Director::getInstance()->end();
-}
-// on "init" you need to initialize your instance
 
 Sprite* createWall() {
 	Sprite* poringWall = Sprite::create("wall-poring.png");
@@ -92,7 +87,7 @@ Vec2 randomPowerup() {
 	return Vec2(x * sideSize, y * sideSize);
 }
 
-void moveForward(Vec2 to, Vec2 from, SnakeGame* helloWorld) {
+void moveForward(Vec2 to, Vec2 from, SnakeGame* snakeGame) {
 	Sprite* head = snakeArray.front();
 	if (tiles[(int)to.x][(int)to.y] != OnTile::empty) {
 		if (tiles[(int)to.x][(int)to.y] == OnTile::food) {
@@ -101,7 +96,7 @@ void moveForward(Vec2 to, Vec2 from, SnakeGame* helloWorld) {
 			head->setPosition(Vec2(to.x*sideSize, to.y*sideSize));
 			auto body = createBody();
 			body->setPosition(Vec2(from.x*sideSize, from.y*sideSize));
-			helloWorld->addChild(body);
+			snakeGame->addChild(body);
 			snakeArray.pop_front();
 			snakeArray.push_front(body);
 			snakeArray.push_front(head);
@@ -121,7 +116,7 @@ void moveForward(Vec2 to, Vec2 from, SnakeGame* helloWorld) {
 			head->setPosition(Vec2(to.x*sideSize, to.y*sideSize));
 			auto body = createBody();
 			body->setPosition(Vec2(from.x*sideSize, from.y*sideSize));
-			helloWorld->addChild(body);
+			snakeGame->addChild(body);
 			snakeArray.pop_front();
 			snakeArray.push_front(body);
 			snakeArray.push_front(head);
@@ -131,18 +126,18 @@ void moveForward(Vec2 to, Vec2 from, SnakeGame* helloWorld) {
 			powerUpLabel->setString("5");
 		}
 		else {
-			helloWorld->unscheduleUpdate();
+			snakeGame->unscheduleUpdate();
 			auto gameOverLabel = Label::createWithTTF("GAME OVER", "micross.ttf", 100);
 			// position the label on the center of the screen
 			gameOverLabel->setColor(Color3B::YELLOW);
 			gameOverLabel->setPosition(Vec2(widthCount*sideSize / 2, heightCount*sideSize / 2));
-			helloWorld->addChild(gameOverLabel, 1);
+			snakeGame->addChild(gameOverLabel, 1);
 			gameOver = true;
 			auto restartLabel = Label::createWithTTF("Press space to Restart", "micross.ttf", 50);
 			// position the label on the center of the screen
 			restartLabel->setColor(Color3B::YELLOW);
 			restartLabel->setPosition(Vec2(widthCount*sideSize / 2, heightCount*sideSize / 2 - gameOverLabel->getBoundingBox().size.height));
-			helloWorld->addChild(restartLabel, 1);
+			snakeGame->addChild(restartLabel, 1);
 
 		}
 	}
@@ -160,23 +155,23 @@ void moveForward(Vec2 to, Vec2 from, SnakeGame* helloWorld) {
 	}
 }
 
-void move(SnakeGame* helloWorld) {
+void move(SnakeGame* snakeGame) {
 	Sprite* head = snakeArray.front();
 	Vec2 position = head->getPosition();
 	int x = position.x / sideSize;
 	int y = position.y / sideSize;
 	switch (towards) {
 	case up:
-		moveForward(Vec2(x, y + 1), Vec2(x, y), helloWorld);
+		moveForward(Vec2(x, y + 1), Vec2(x, y), snakeGame);
 		break;
 	case Direction::left:
-		moveForward(Vec2(x - 1, y), Vec2(x, y), helloWorld);
+		moveForward(Vec2(x - 1, y), Vec2(x, y), snakeGame);
 		break;
 	case down:
-		moveForward(Vec2(x, y - 1), Vec2(x, y), helloWorld);
+		moveForward(Vec2(x, y - 1), Vec2(x, y), snakeGame);
 		break;
 	case Direction::right:
-		moveForward(Vec2(x + 1, y), Vec2(x, y), helloWorld);
+		moveForward(Vec2(x + 1, y), Vec2(x, y), snakeGame);
 		break;
 	}
 }
@@ -196,12 +191,7 @@ bool SnakeGame::init()
 	audio->preloadEffect("eat.wav");
 	audio->preloadEffect("decagi.wav");
 	audio->preloadEffect("incagi.wav");
-    //////////////////////////////
-    // 1. super init first
-    if ( !Layer::init() )
-    {
-        return false;
-    }
+
 	auto gameLabel = Label::createWithTTF("Snakering", "micross.ttf", 100);
 	// position the label on the center of the screen
 	gameLabel->setColor(Color3B::YELLOW);
@@ -237,26 +227,6 @@ void SnakeGame::initWorld() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	gameOver = false;
-	/////////////////////////////
-	// 2. add a menu item with "X" image, which is clicked to quit the program
-	//    you may modify it.
-
-	// add a "close" icon to exit the progress. it's an autorelease object
-	//   auto closeItem = MenuItemImage::create(
-	//                                          "CloseNormal.png",
-	//                                          "CloseSelected.png",
-	//                                          CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-	//   
-	//closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-	//                               origin.y + closeItem->getContentSize().height/2));
-
-	//   // create menu, it's an autorelease object
-	//   auto menu = Menu::create(closeItem, NULL);
-	//   menu->setPosition(Vec2::ZERO);
-	//   this->addChild(menu, 1);
-
-	/////////////////////////////
-	// 3. add your codes below...
 
 	while (!snakeArray.empty())
 		snakeArray.pop_back();
