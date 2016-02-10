@@ -58,14 +58,14 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 }
 // on "init" you need to initialize your instance
 
-auto createWall() {
-	auto poringWall = Sprite::create("wall-poring.png");
+Sprite* createWall() {
+	Sprite* poringWall = Sprite::create("wall-poring.png");
 	poringWall->setAnchorPoint(Vec2::ZERO);
 	return poringWall;
 }
 
-auto createBody() {
-	auto poringTail = Sprite::create("tail-poring.png");
+Sprite* createBody() {
+	Sprite* poringTail = Sprite::create("tail-poring.png");
 	poringTail->setAnchorPoint(Vec2::ZERO);
 	return poringTail;
 }
