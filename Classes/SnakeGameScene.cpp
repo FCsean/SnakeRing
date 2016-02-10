@@ -1,4 +1,4 @@
-#include "HelloWorldScene.h"
+#include "SnakeGameScene.h"
 #include "cocostudio/CocoStudio.h"
 #include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
@@ -38,13 +38,13 @@ Sprite* powerupSprite;
 boolean powerupInMap;
 boolean powerupEaten;
 
-Scene* HelloWorld::createScene()
+Scene* SnakeGame::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    auto layer = HelloWorld::create();
+    auto layer = SnakeGame::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -52,7 +52,7 @@ Scene* HelloWorld::createScene()
     // return the scene
     return scene;
 }
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void SnakeGame::menuCloseCallback(Ref* pSender)
 {
 	Director::getInstance()->end();
 }
@@ -92,7 +92,7 @@ Vec2 randomPowerup() {
 	return Vec2(x * sideSize, y * sideSize);
 }
 
-void moveForward(Vec2 to, Vec2 from, HelloWorld* helloWorld) {
+void moveForward(Vec2 to, Vec2 from, SnakeGame* helloWorld) {
 	Sprite* head = snakeArray.front();
 	if (tiles[(int)to.x][(int)to.y] != OnTile::empty) {
 		if (tiles[(int)to.x][(int)to.y] == OnTile::food) {
@@ -160,7 +160,7 @@ void moveForward(Vec2 to, Vec2 from, HelloWorld* helloWorld) {
 	}
 }
 
-void move(HelloWorld* helloWorld) {
+void move(SnakeGame* helloWorld) {
 	Sprite* head = snakeArray.front();
 	Vec2 position = head->getPosition();
 	int x = position.x / sideSize;
@@ -181,7 +181,7 @@ void move(HelloWorld* helloWorld) {
 	}
 }
 
-bool HelloWorld::init()
+bool SnakeGame::init()
 {
     //  you can create scene with following comment code instead of using csb file.
     // 1. super init first
@@ -233,7 +233,7 @@ bool HelloWorld::init()
     return true;
 }
 
-void HelloWorld::initWorld() {
+void SnakeGame::initWorld() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	gameOver = false;
@@ -365,7 +365,7 @@ void HelloWorld::initWorld() {
 	
 }
 
-void HelloWorld::update(float delta) {
+void SnakeGame::update(float delta) {
 	if (currentTimeTilMove < 0) {
 		bool moved = false;
 		while (!moved && !userInput.empty()) {
